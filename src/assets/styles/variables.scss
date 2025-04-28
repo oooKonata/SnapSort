@@ -51,3 +51,12 @@ $color-bg: #f8f8f8;
 @mixin divider-right {
   box-shadow: $color-dark-2 -1px 0 0 0 inset;
 }
+
+@mixin divider-right-file {
+  box-shadow: $color-dark-6 -1px 0 0 0 inset;
+}
+
+@mixin divider-right-resize {
+  box-shadow: $color-dark-10 -2px 0 0 0 inset;
+  cursor: col-resize;
+}

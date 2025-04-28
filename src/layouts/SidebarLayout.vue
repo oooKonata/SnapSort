@@ -3,43 +3,60 @@
   import { ref } from 'vue'
   import OIcon from '@/components/common/o-icon'
   import { OOption, OOptionGroup } from '@/components/common/o-option'
-  import { OptionList } from './types'
+  import { NavList } from './types'
+  import { addUnit } from '@/utils/addUnit'
+  import { useRouter } from 'vue-router'
 
-  const navList = ref<OptionList[]>([
+  withDefaults(
+    defineProps<{
+      sidebarWidth?: number | string
+    }>(),
+    {
+      sidebarWidth: 248,
+    }
+  )
+
+  const router = useRouter()
+
+  const showMarkList = ref(true)
+  const activeId = ref('file')
+
+  const isResizeHover = ref(false)
+  const isResize = defineModel()
+
+  const navList = ref<NavList[]>([
     { id: 'search', label: '搜索', icon: loadStaticResource('/icons/sidebar-search.svg') },
     { id: 'home', label: '首页', icon: loadStaticResource('/icons/sidebar-home.svg') },
     { id: 'file', label: '文件', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'fav', label: '收藏', icon: loadStaticResource('/icons/sidebar-file.svg') },
+    { id: 'fav', label: '收藏', icon: loadStaticResource('/icons/sidebar-fav.svg') },
   ])
 
-  const markList = ref<OptionList[]>([
-    { id: 'red', label: '红色', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'orange', label: '橙色', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'yellow', label: '黄色', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'green', label: '绿色', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'blue', label: '蓝色', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'purple', label: '紫色', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'gray', label: '灰色', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'work', label: '工作', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'private', label: '个人', icon: loadStaticResource('/icons/sidebar-file.svg') },
-    { id: 'important', label: '重要', icon: loadStaticResource('/icons/sidebar-file.svg') },
+  const markList = ref<NavList[]>([
+    { id: 'red', label: '红色', icon: loadStaticResource('/icons/mark-red.svg') },
+    { id: 'orange', label: '橙色', icon: loadStaticResource('/icons/mark-orange.svg') },
+    { id: 'yellow', label: '黄色', icon: loadStaticResource('/icons/mark-yellow.svg') },
+    { id: 'green', label: '绿色', icon: loadStaticResource('/icons/mark-green.svg') },
+    { id: 'blue', label: '蓝色', icon: loadStaticResource('/icons/mark-blue.svg') },
+    { id: 'purple', label: '紫色', icon: loadStaticResource('/icons/mark-purple.svg') },
+    { id: 'gray', label: '灰色', icon: loadStaticResource('/icons/mark-gray.svg') },
+    { id: 'private', label: '个人', icon: loadStaticResource('/icons/mark-none.svg') },
   ])
 
-  const setList = ref<OptionList[]>([
+  const setList = ref<NavList[]>([
     { id: 'set', label: '设置', icon: loadStaticResource('/icons/sidebar-set.svg') },
     { id: 'trash', label: '垃圾箱', icon: loadStaticResource('/icons/sidebar-home.svg') },
   ])
 
-  const showMarkList = ref(true)
-  const activeId = ref('home')
-
-  const handleRoute = (data: OptionList) => {
+  const handleRoute = (data: NavList) => {
     activeId.value = data.id
+    router.push({ name: data.id })
   }
 </script>
 
 <template>
-  <div class="sidebar-layout">
+  <div
+    :class="['sidebar-layout', { 'is-resizing': isResize || isResizeHover }]"
+    :style="{ width: addUnit(sidebarWidth) }">
     <div class="profile">
       <OOption>
         <template #left>
@@ -77,6 +94,7 @@
           <OOption @click="showMarkList = !showMarkList">
             <template #left><label>标签</label></template>
             <template #right>
+              <OIcon :src="loadStaticResource('/icons/sidebar-more.svg')" interactive />
               <OIcon
                 :class="showMarkList ? 'is-expand' : 'is-collapse'"
                 :src="loadStaticResource('/icons/sidebar-arrow.svg')" />
@@ -92,6 +110,9 @@
           <template #left>
             <OIcon :src="item.icon!" />
             <label>{{ item.label }}</label>
+          </template>
+          <template #right>
+            <OIcon :src="loadStaticResource('/icons/sidebar-more.svg')" interactive />
           </template>
         </OOption>
       </OOptionGroup>
@@ -111,12 +132,18 @@
         </OOption>
       </OOptionGroup>
     </div>
+
+    <div
+      class="resize"
+      @mousedown="isResize = true"
+      @mouseenter="isResizeHover = true"
+      @mouseleave="isResizeHover = false"></div>
   </div>
 </template>
 
 <style scoped lang="scss">
   .sidebar-layout {
-    width: 248px;
+    min-width: 248px;
     height: 100vh;
     background-color: $color-bg;
     padding: 8px;
@@ -124,6 +151,7 @@
     flex-direction: column;
     gap: 8px;
     @include divider-right;
+    position: relative;
 
     .profile {
       .info {
@@ -192,6 +220,18 @@
 
     :deep(.o-option.is-active label) {
       color: $color-dark-80;
+    }
+
+    .resize {
+      position: absolute;
+      width: 12px;
+      height: 100%;
+      top: 0;
+      right: -6px;
+    }
+
+    &.is-resizing {
+      @include divider-right-resize;
     }
   }
 </style>

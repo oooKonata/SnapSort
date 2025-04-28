@@ -68,6 +68,8 @@
     user-select: none;
     cursor: inherit;
 
+    background-color: aquamarine;
+
     &__left {
       flex: 1;
       display: flex;
