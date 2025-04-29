@@ -14,3 +14,10 @@ export interface FileItem {
   createdAt: Date
   updatedAt: Date
 }
+export interface ContextMenuItem {
+  id: string
+  name: string
+  parentId: string | null
+  tip?: string
+  children: ContextMenuItem[]
+}

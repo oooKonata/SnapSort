@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue'
+  import { ref } from 'vue'
   import SidebarLayout from './SidebarLayout.vue'
+  import ContextMenu from '@/components/features/ContextMenu.vue'
 
   const sidebarWith = ref(248)
   const resizeState = ref(false)
@@ -15,6 +16,7 @@
     <div class="content">
       <RouterView />
     </div>
+    <ContextMenu />
   </div>
 </template>
 
@@ -26,7 +28,6 @@
     .content {
       flex: 1;
       height: 100vh;
-      overflow: scroll;
     }
   }
 </style>

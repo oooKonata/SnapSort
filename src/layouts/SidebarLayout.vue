@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { loadStaticResource } from '@/assets'
   import { ref } from 'vue'
-  import OIcon from '@/components/common/o-icon'
-  import { OOption, OOptionGroup } from '@/components/common/o-option'
+  import { OIcon } from '@/components/common/o-icon'
+  import { OOption, OOptionGroup } from '@/components/common/o-menu'
   import { NavList } from './types'
   import { addUnit } from '@/utils/addUnit'
   import { useRouter } from 'vue-router'
@@ -150,7 +150,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    @include divider-right;
+    @include divider-bottom-light;
     position: relative;
 
     .profile {

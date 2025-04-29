@@ -25,7 +25,7 @@ const fileTree = ref<FileItem[]>([
         children: [
           {
             id: '1-2-1',
-            name: '字体包',
+            name: '文件',
             type: 'folder',
             parentId: '1-2',
             children: [],

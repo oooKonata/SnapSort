@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
 
   defineOptions({
     name: 'OOption',
   })
 
-  const props = defineProps<{
+  defineProps<{
     disabled?: boolean
     isActive?: boolean
   }>()
@@ -68,7 +68,7 @@
     user-select: none;
     cursor: inherit;
 
-    background-color: aquamarine;
+    // background-color: aquamarine;
 
     &__left {
       flex: 1;

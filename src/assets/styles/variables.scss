@@ -48,15 +48,23 @@ $color-bg: #f8f8f8;
   white-space: nowrap;
 }
 
-@mixin divider-right {
+@mixin divider-bottom-light {
   box-shadow: $color-dark-2 -1px 0 0 0 inset;
 }
 
-@mixin divider-right-file {
+@mixin divider-right-dark {
   box-shadow: $color-dark-6 -1px 0 0 0 inset;
+}
+
+@mixin divider-bottom-dark {
+  box-shadow: $color-dark-6 0 -1px 0 0 inset;
 }
 
 @mixin divider-right-resize {
   box-shadow: $color-dark-10 -2px 0 0 0 inset;
   cursor: col-resize;
+}
+
+@mixin shadow-menu {
+  box-shadow: $color-dark-10 0px 14px 28px -6px, $color-dark-6 0px 2px 4px -1px, $color-dark-8 0px 0px 0px 1px;
 }
