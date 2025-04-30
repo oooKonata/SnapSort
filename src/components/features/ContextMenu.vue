@@ -3,27 +3,35 @@
   import { OMenu, OOption } from '../common/o-menu'
   import { loadStaticResource } from '@/assets'
   import { OIcon } from '../common/o-icon'
+  import { storeToRefs } from 'pinia'
+  import { useFileStore } from '@/store/fileStore'
+  import { computed, CSSProperties } from 'vue'
   import { ContextMenuItem } from '@/layouts/types'
-  import { ref } from 'vue'
 
-  const fileOrder = ref('name')
-  const fileOrderList = ['name', 'type', 'size', 'mark', 'create-time', 'update-time']
+  const { mousePosition, fileItemContext } = storeToRefs(useFileStore())
+  console.log('mousePosition: ', mousePosition.value)
 
-  // const handleContextMenu = (data: ContextMenuItem) => {
-  //   if (data.id === 'create-new-folder') {
-  //     console.log('创建文件夹')
-  //   }
-  //   if (fileOrderList.includes(data.id)) {
-  //     fileOrder.value = data.id
-  //   }
-  // }
+  const styles = computed((): CSSProperties => {
+    return {
+      top: `${mousePosition.value.y}px`,
+      left: `${mousePosition.value.x}px`,
+    }
+  })
+
+  const handleClick = (data: ContextMenuItem, parentData?: ContextMenuItem) => {
+    if (data.id === 'create-new-folder') {
+      console.log()
+    }
+
+    fileItemContext.value = undefined
+  }
 </script>
 
 <template>
-  <div class="context-menu">
+  <div class="context-menu" :style="styles">
     <OMenu :source="fileContextMenuList">
-      <template #default="{ optionData, depth, active }">
-        <OOption :isActive="active">
+      <template #default="{ optionData, active, parentData }">
+        <OOption :isActive="active" @click.stop="handleClick(optionData, parentData)">
           <template #left>
             <OIcon v-if="optionData.icon" :src="optionData.icon" />
             <label>{{ optionData.name }}</label>

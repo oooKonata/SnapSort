@@ -36,8 +36,8 @@
     })
   }
 
-  const contextMenu = (data: T, event: MouseEvent) => {
-    console.log(event)
+  const handleContextMenu = (data: T) => {
+    console.log(data)
   }
 </script>
 
@@ -47,7 +47,7 @@
     :key="index"
     class="o-cascader"
     @click="expandSub(item)"
-    @contextmenu.prevent="contextMenu(item, $event)">
+    @contextmenu.prevent="handleContextMenu(item)">
     <slot :optionData="item" :depth="depth" :active="activeIds.has(item.id)" />
 
     <template v-if="item.children.length && activeIds.has(item.id)">

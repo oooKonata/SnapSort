@@ -109,9 +109,9 @@
       display: flex;
       flex-direction: column;
       gap: 1px;
-      background-color: beige;
       border-radius: 8px;
       padding: 4px;
+      background-color: #fff;
       @include shadow-menu;
     }
   }

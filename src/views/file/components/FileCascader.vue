@@ -4,13 +4,24 @@
   import { OIcon } from '../../../components/common/o-icon'
   import { OOption } from '@/components/common/o-menu'
   import { loadStaticResource } from '@/assets'
+  import { FileItem } from '@/layouts/types'
+  import { storeToRefs } from 'pinia'
+  import { useFileStore } from '@/store/fileStore'
+
+  const { mousePosition, fileItemContext } = storeToRefs(useFileStore())
+
+  const handleContextMenu = (data: FileItem, event: MouseEvent) => {
+    mousePosition.value.x = event.clientX
+    mousePosition.value.y = event.clientY
+    fileItemContext.value = data
+  }
 </script>
 
 <template>
   <div class="file-cascader">
     <OCascader :source="fileTree">
-      <template #default="{ optionData, depth, active }">
-        <OOption :isActive="active">
+      <template #default="{ optionData, active }">
+        <OOption :isActive="active" @contextmenu.prevent="handleContextMenu(optionData, $event)">
           <template #left>
             <OIcon
               :src="
