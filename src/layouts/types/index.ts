@@ -1,9 +1,9 @@
 export interface NavList {
   id: string
   label: string
-  icon?: string
-  disabled?: boolean
-  meta?: Record<string, any>
+  icon: string
+  disabled: boolean
+  meta: Record<string, any>
 }
 export interface FileItem {
   id: string
@@ -16,8 +16,10 @@ export interface FileItem {
 }
 export interface ContextMenuItem {
   id: string
+  icon: string
   name: string
   parentId: string | null
-  tip?: string
+  tip: string
+  meta: Record<string, any>
   children: ContextMenuItem[]
 }

@@ -1,20 +1,79 @@
 import { ref } from 'vue'
 import { ContextMenuItem } from '../types'
+import { loadStaticResource } from '@/assets'
 
-export const fileItemContextMenuList = ref<ContextMenuItem[]>([
-  { id: 'create-new-folder', name: '新建文件夹', parentId: '1', children: [] },
+export const fileContextMenuList = ref<ContextMenuItem[]>([
+  {
+    id: 'create-new-folder',
+    icon: loadStaticResource('/icons/sidebar-file.svg'),
+    name: '新建文件夹',
+    parentId: '',
+    tip: '',
+    meta: {},
+    children: [],
+  },
   {
     id: 'order',
     name: '排序',
-    parentId: '2',
+    icon: loadStaticResource('/icons/sidebar-file.svg'),
+    parentId: '',
     tip: '',
+    meta: {},
     children: [
-      { id: 'name', name: '名称', parentId: '2-1', tip: '', children: [] },
-      { id: 'type', name: '种类', parentId: '2-2', tip: '', children: [] },
-      { id: 'size', name: '大小', parentId: '2-3', tip: '', children: [] },
-      { id: 'mark', name: '标签', parentId: '2-4', tip: '', children: [] },
-      { id: 'create-time', name: '添加时间', parentId: '2-5', tip: '', children: [] },
-      { id: 'update-time', name: '修改时间', parentId: '2-6', tip: '', children: [] },
+      {
+        id: 'name',
+        name: '名称',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: true },
+        children: [],
+      },
+      {
+        id: 'type',
+        name: '种类',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        children: [],
+      },
+      {
+        id: 'size',
+        name: '大小',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        children: [],
+      },
+      {
+        id: 'mark',
+        name: '标签',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        children: [],
+      },
+      {
+        id: 'create-time',
+        name: '添加时间',
+        parentId: '',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        tip: '',
+        meta: { selected: false },
+        children: [],
+      },
+      {
+        id: 'update-time',
+        name: '修改时间',
+        parentId: 'order',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        tip: '',
+        meta: { selected: false },
+        children: [],
+      },
     ],
   },
 ])
