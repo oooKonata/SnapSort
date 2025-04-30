@@ -11,6 +11,7 @@
 
   const props = defineProps<{
     source: T[]
+    parentData?: T
   }>()
 
   const emits = defineEmits<{
@@ -20,10 +21,6 @@
   const depth = inject(depthKey, ref(0))
   const childDepth = computed(() => depth.value + 1)
   provide(depthKey, childDepth)
-
-  const parentData = inject('parentDataKey', props.source)
-  console.log('parentData: ', parentData)
-  provide('parentDataKey', parentData)
 
   const activeIds = ref<Set<string>>(new Set())
 
@@ -59,16 +56,14 @@
   }
 
   const handleClick = (data: T, parentData?: T) => {
-    console.log('parentData: ', parentData)
-
     if (parentData) {
       parentData.tip = data.name
 
       parentData.children.map(item => {
         if (item.id !== data.id) {
-          item.meta.selected = false
+          item.meta!.selected = false
         } else {
-          item.meta.selected = true
+          item.meta!.selected = true
         }
       })
     }
@@ -87,11 +82,11 @@
     class="o-menu"
     @mouseenter="expandSub(item)"
     @click="handleClick(item, parentData)">
-    <slot :optionData="item" :depth="depth" :active="activeIds.has(item.id)" />
+    <slot :optionData="item" :parentData="parentData" :depth="depth" :active="activeIds.has(item.id)" />
 
     <template v-if="item.children.length && activeIds.has(item.id)">
       <div class="o-menu__children" :style="childStyles">
-        <OMenu :source="item.children!">
+        <OMenu :source="item.children!" :parentData="item">
           <template
             v-for="(_, slotName) in $slots"
             #[slotName]="scope: { optionData: T, parentData: T, depth: number, active: boolean }">
