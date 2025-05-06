@@ -36,9 +36,7 @@
     })
   }
 
-  const handleContextMenu = (data: T) => {
-    console.log(data)
-  }
+  const handleContextMenu = (data: T) => {}
 </script>
 
 <template>

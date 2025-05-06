@@ -9,7 +9,6 @@
   import { ContextMenuItem } from '@/layouts/types'
 
   const { mousePosition, fileItemContext } = storeToRefs(useFileStore())
-  console.log('mousePosition: ', mousePosition.value)
 
   const styles = computed((): CSSProperties => {
     return {
@@ -18,9 +17,9 @@
     }
   })
 
-  const handleClick = (data: ContextMenuItem, parentData?: ContextMenuItem) => {
+  const handleClick = (data: ContextMenuItem) => {
     if (data.id === 'create-new-folder') {
-      console.log()
+      fileItemContext.value?.children
     }
 
     fileItemContext.value = undefined
@@ -30,8 +29,8 @@
 <template>
   <div class="context-menu" :style="styles">
     <OMenu :source="fileContextMenuList">
-      <template #default="{ optionData, active, parentData }">
-        <OOption :isActive="active" @click.stop="handleClick(optionData, parentData)">
+      <template #default="{ optionData, active }">
+        <OOption :isActive="active" @click.stop="handleClick(optionData)">
           <template #left>
             <OIcon v-if="optionData.icon" :src="optionData.icon" />
             <label>{{ optionData.name }}</label>

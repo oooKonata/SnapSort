@@ -24,7 +24,8 @@
     <div
       class="overlay"
       v-if="fileItemContext"
-      @click="fileItemContext = isOnContextMenu ? fileItemContext : undefined">
+      @click="fileItemContext = isOnContextMenu ? fileItemContext : undefined"
+      @contextmenu.prevent>
       <ContextMenu @mouseenter="isOnContextMenu = true" @mouseleave="isOnContextMenu = false" />
     </div>
   </div>
