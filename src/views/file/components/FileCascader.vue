@@ -13,15 +13,27 @@
   const handleContextMenu = (data: FileItem, event: MouseEvent) => {
     mousePosition.value.x = event.clientX
     mousePosition.value.y = event.clientY
-    fileItemContext.value = data
+    fileItemContext.value = [data]
+  }
+
+  const handleCascaderContextMenu = (data: FileItem, event: MouseEvent) => {
+    mousePosition.value.x = event.clientX
+    mousePosition.value.y = event.clientY
+    fileItemContext.value = [data]
+  }
+
+  const handleRootFileCascader = (event: MouseEvent) => {
+    mousePosition.value.x = event.clientX
+    mousePosition.value.y = event.clientY
+    fileItemContext.value = fileTree.value
   }
 </script>
 
 <template>
-  <div class="file-cascader">
-    <OCascader :source="fileTree">
+  <div class="file-cascader" @contextmenu.prevent.stop="handleRootFileCascader($event)">
+    <OCascader :source="fileTree" @cascader-context-menu="handleCascaderContextMenu">
       <template #default="{ optionData, active }">
-        <OOption :isActive="active" @contextmenu.prevent="handleContextMenu(optionData, $event)">
+        <OOption :isActive="active" @contextmenu.prevent.stop="handleContextMenu(optionData, $event)">
           <template #left>
             <OIcon
               :src="

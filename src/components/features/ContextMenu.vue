@@ -7,6 +7,7 @@
   import { useFileStore } from '@/store/fileStore'
   import { computed, CSSProperties } from 'vue'
   import { ContextMenuItem } from '@/layouts/types'
+  import { v4 as uuidv4 } from 'uuid'
 
   const { mousePosition, fileItemContext } = storeToRefs(useFileStore())
 
@@ -19,7 +20,27 @@
 
   const handleClick = (data: ContextMenuItem) => {
     if (data.id === 'create-new-folder') {
-      fileItemContext.value?.children
+      if (fileItemContext.value?.length === 1) {
+        fileItemContext.value[0].children.push({
+          id: uuidv4(),
+          name: '新建文件夹',
+          type: 'folder',
+          parentId: data.id,
+          children: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+      } else {
+        fileItemContext.value?.push({
+          id: uuidv4(),
+          name: '新建文件夹',
+          type: 'folder',
+          parentId: data.id,
+          children: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+      }
     }
 
     fileItemContext.value = undefined

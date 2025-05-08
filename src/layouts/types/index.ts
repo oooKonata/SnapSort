@@ -2,8 +2,8 @@ export interface NavList {
   id: string
   label: string
   icon: string
-  disabled: boolean
-  meta: Record<string, any>
+  disabled?: boolean
+  meta?: Record<string, any>
 }
 export interface FileItem {
   id: string

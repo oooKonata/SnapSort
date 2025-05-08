@@ -10,6 +10,10 @@
     source: T[]
   }>()
 
+  const emit = defineEmits<{
+    (e: 'cascader-context-menu', data: T, event: MouseEvent): void
+  }>()
+
   const depth = inject(depthKey, ref(0))
   const childDepth = computed(() => depth.value + 1)
   provide(depthKey, childDepth)
@@ -35,22 +39,20 @@
       }
     })
   }
-
-  const handleContextMenu = (data: T) => {}
 </script>
 
 <template>
-  <div
-    v-for="(item, index) in source"
-    :key="index"
-    class="o-cascader"
-    @click="expandSub(item)"
-    @contextmenu.prevent="handleContextMenu(item)">
+  <div v-for="(item, index) in source" :key="index" class="o-cascader" @click="expandSub(item)">
     <slot :optionData="item" :depth="depth" :active="activeIds.has(item.id)" />
 
     <template v-if="item.children.length && activeIds.has(item.id)">
-      <div class="o-cascader__children" :style="childStyles">
-        <OCascader :source="item.children!">
+      <div
+        class="o-cascader__children"
+        :style="childStyles"
+        @contextmenu.prevent.stop="emit('cascader-context-menu', item, $event)">
+        <OCascader
+          :source="item.children!"
+          @cascader-context-menu="(child, event) => emit('cascader-context-menu', child, event)">
           <template
             v-for="(_, slotName) in $slots"
             #[slotName]="scope: { optionData: T, depth: number, active: boolean }">
