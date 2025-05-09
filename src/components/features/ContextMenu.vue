@@ -26,6 +26,15 @@
         children: [],
       },
       {
+        id: 'rename',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        name: '重命名',
+        parentId: '',
+        tip: '',
+        meta: {},
+        children: [],
+      },
+      {
         id: 'delete',
         icon: loadStaticResource('/icons/sidebar-file.svg'),
         name: '删除',

@@ -8,7 +8,7 @@
   import { storeToRefs } from 'pinia'
   import { useFileStore } from '@/store/fileStore'
 
-  const { mousePosition, fileContext } = storeToRefs(useFileStore())
+  const { currentFile, mousePosition, fileContext } = storeToRefs(useFileStore())
 
   const handleContextMenu = (data: FileItem, event: MouseEvent) => {
     mousePosition.value.x = event.clientX
@@ -33,7 +33,10 @@
   <div class="file-cascader" @contextmenu.prevent.stop="handleRootFileCascader($event)">
     <OCascader :source="fileTree" @cascader-context-menu="handleCascaderContextMenu">
       <template #default="{ optionData, active }">
-        <OOption :isActive="active" @contextmenu.prevent.stop="handleContextMenu(optionData, $event)">
+        <OOption
+          :isActive="active"
+          @contextmenu.prevent.stop="handleContextMenu(optionData, $event)"
+          @click="currentFile = optionData">
           <template #left>
             <OIcon
               :src="
