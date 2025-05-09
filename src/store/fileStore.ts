@@ -41,7 +41,7 @@ export const useFileStore = defineStore('ss-file', () => {
   // }
 
   const mousePosition = ref<{ x: number; y: number }>({ x: 0, y: 0 })
-  const fileItemContext = ref<FileItem[]>()
+  const fileContext = ref<{ type: string; context: FileItem[] }>()
 
-  return { mousePosition, fileItemContext }
+  return { mousePosition, fileContext }
 })

@@ -8,24 +8,24 @@
   import { storeToRefs } from 'pinia'
   import { useFileStore } from '@/store/fileStore'
 
-  const { mousePosition, fileItemContext } = storeToRefs(useFileStore())
+  const { mousePosition, fileContext } = storeToRefs(useFileStore())
 
   const handleContextMenu = (data: FileItem, event: MouseEvent) => {
     mousePosition.value.x = event.clientX
     mousePosition.value.y = event.clientY
-    fileItemContext.value = [data]
+    fileContext.value = { type: 'fileItem', context: [data] }
   }
 
   const handleCascaderContextMenu = (data: FileItem, event: MouseEvent) => {
     mousePosition.value.x = event.clientX
     mousePosition.value.y = event.clientY
-    fileItemContext.value = [data]
+    fileContext.value = { type: 'fileList', context: [data] }
   }
 
   const handleRootFileCascader = (event: MouseEvent) => {
     mousePosition.value.x = event.clientX
     mousePosition.value.y = event.clientY
-    fileItemContext.value = fileTree.value
+    fileContext.value = { type: 'fileList', context: fileTree.value }
   }
 </script>
 

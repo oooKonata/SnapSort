@@ -1,15 +1,117 @@
 <script setup lang="ts">
-  import { fileContextMenuList } from '@/layouts/mock/contextMenu'
   import { OMenu, OOption } from '../common/o-menu'
   import { loadStaticResource } from '@/assets'
   import { OIcon } from '../common/o-icon'
   import { storeToRefs } from 'pinia'
   import { useFileStore } from '@/store/fileStore'
-  import { computed, CSSProperties } from 'vue'
+  import { computed, CSSProperties, ref } from 'vue'
   import { ContextMenuItem } from '@/layouts/types'
   import { v4 as uuidv4 } from 'uuid'
+  import { cloneDeep } from 'lodash-es'
+  import { fileTree } from '@/layouts/mock/fileTree'
 
-  const { mousePosition, fileItemContext } = storeToRefs(useFileStore())
+  const { mousePosition, fileContext } = storeToRefs(useFileStore())
+  console.log('fileContext: ', fileContext.value)
+  const fileContextMenuList = ref<ContextMenuItem[]>([])
+
+  if (fileContext.value?.type === 'fileItem') {
+    fileContextMenuList.value = [
+      {
+        id: 'copy',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        name: '复制',
+        parentId: '',
+        tip: '',
+        meta: {},
+        children: [],
+      },
+      {
+        id: 'delete',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        name: '删除',
+        parentId: '',
+        tip: '',
+        meta: {},
+        children: [],
+      },
+    ]
+  } else if (fileContext.value?.type === 'fileList') {
+    fileContextMenuList.value = [
+      {
+        id: 'create-new-folder',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        name: '新建文件夹',
+        parentId: '',
+        tip: '',
+        meta: {},
+        children: [],
+      },
+      {
+        id: 'order',
+        name: '排序',
+        icon: loadStaticResource('/icons/sidebar-file.svg'),
+        parentId: '',
+        tip: '',
+        meta: {},
+        children: [
+          {
+            id: 'name',
+            name: '名称',
+            icon: loadStaticResource('/icons/sidebar-file.svg'),
+            parentId: 'order',
+            tip: '',
+            meta: { selected: true },
+            children: [],
+          },
+          {
+            id: 'type',
+            name: '种类',
+            icon: loadStaticResource('/icons/sidebar-file.svg'),
+            parentId: 'order',
+            tip: '',
+            meta: { selected: false },
+            children: [],
+          },
+          {
+            id: 'size',
+            name: '大小',
+            icon: loadStaticResource('/icons/sidebar-file.svg'),
+            parentId: 'order',
+            tip: '',
+            meta: { selected: false },
+            children: [],
+          },
+          {
+            id: 'mark',
+            name: '标签',
+            icon: loadStaticResource('/icons/sidebar-file.svg'),
+            parentId: 'order',
+            tip: '',
+            meta: { selected: false },
+            children: [],
+          },
+          {
+            id: 'create-time',
+            name: '添加时间',
+            parentId: '',
+            icon: loadStaticResource('/icons/sidebar-file.svg'),
+            tip: '',
+            meta: { selected: false },
+            children: [],
+          },
+          {
+            id: 'update-time',
+            name: '修改时间',
+            parentId: 'order',
+            icon: loadStaticResource('/icons/sidebar-file.svg'),
+            tip: '',
+            meta: { selected: false },
+            children: [],
+          },
+        ],
+      },
+    ]
+  }
 
   const styles = computed((): CSSProperties => {
     return {
@@ -19,31 +121,41 @@
   })
 
   const handleClick = (data: ContextMenuItem) => {
-    if (data.id === 'create-new-folder') {
-      if (fileItemContext.value?.length === 1) {
-        fileItemContext.value[0].children.push({
-          id: uuidv4(),
-          name: '新建文件夹',
-          type: 'folder',
-          parentId: data.id,
-          children: [],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        })
-      } else {
-        fileItemContext.value?.push({
-          id: uuidv4(),
-          name: '新建文件夹',
-          type: 'folder',
-          parentId: data.id,
-          children: [],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        })
+    if (fileContext.value?.type === 'fileItem') {
+      if (data.id === 'copy') {
+        if (fileContext.value.context.length === 1) {
+          // fileContext.value.context[0].children.push(cloneDeep())
+        }
       }
     }
 
-    fileItemContext.value = undefined
+    if (fileContext.value?.type === 'fileList') {
+      if (data.id === 'create-new-folder') {
+        if (fileContext.value.context.length === 1) {
+          fileContext.value.context[0].children.push({
+            id: uuidv4(),
+            name: '新建文件夹',
+            type: 'folder',
+            parentId: fileContext.value.context[0].id,
+            children: [],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          })
+        } else {
+          fileContext.value.context.push({
+            id: uuidv4(),
+            name: '新建文件夹',
+            type: 'folder',
+            parentId: '',
+            children: [],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          })
+        }
+      }
+    }
+
+    fileContext.value = undefined
   }
 </script>
 
