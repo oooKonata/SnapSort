@@ -9,7 +9,7 @@
   const resizeState = ref(false)
   const isOnContextMenu = ref(false)
 
-  const { fileContext } = storeToRefs(useFileStore())
+  const { fileMenuContext } = storeToRefs(useFileStore())
 </script>
 
 <template>
@@ -23,8 +23,8 @@
     </div>
     <div
       class="overlay"
-      v-if="fileContext"
-      @click="fileContext = isOnContextMenu ? fileContext : undefined"
+      v-if="fileMenuContext"
+      @click="fileMenuContext = isOnContextMenu ? fileMenuContext : undefined"
       @contextmenu.prevent>
       <ContextMenu @mouseenter="isOnContextMenu = true" @mouseleave="isOnContextMenu = false" />
     </div>

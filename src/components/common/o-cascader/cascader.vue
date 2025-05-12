@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends { id: string, children: T[] }">
+<script setup lang="ts" generic="T extends { id: string, child: T[] }">
   import { ref, computed, inject, provide, CSSProperties } from 'vue'
   import { depthKey } from '../constants/key'
 
@@ -8,10 +8,11 @@
 
   const props = defineProps<{
     source: T[]
+    parentData?: T
   }>()
 
   const emit = defineEmits<{
-    (e: 'cascader-context-menu', data: T, event: MouseEvent): void
+    (e: 'child-context-menu', data: T, event: MouseEvent): void
   }>()
 
   const depth = inject(depthKey, ref(0))
@@ -43,19 +44,20 @@
 
 <template>
   <div v-for="(item, index) in source" :key="index" class="o-cascader" @click="expandSub(item)">
-    <slot :optionData="item" :depth="depth" :active="activeIds.has(item.id)" />
+    <slot :data="item" :parentData="parentData" :depth="depth" :active="activeIds.has(item.id)" />
 
-    <template v-if="item.children.length && activeIds.has(item.id)">
+    <template v-if="item.child.length && activeIds.has(item.id)">
       <div
-        class="o-cascader__children"
+        class="o-cascader__child"
         :style="childStyles"
-        @contextmenu.prevent.stop="emit('cascader-context-menu', item, $event)">
+        @contextmenu.prevent.stop="emit('child-context-menu', item, $event)">
         <OCascader
-          :source="item.children!"
-          @cascader-context-menu="(child, event) => emit('cascader-context-menu', child, event)">
+          :source="item.child!"
+          :parentData="item"
+          @child-context-menu="(child, event) => emit('child-context-menu', child, event)">
           <template
             v-for="(_, slotName) in $slots"
-            #[slotName]="scope: { optionData: T, depth: number, active: boolean }">
+            #[slotName]="scope: { data: T, parentData: T, depth: number, active: boolean }">
             <slot :name="slotName" v-bind="scope" />
           </template>
         </OCascader>
@@ -70,7 +72,7 @@
     flex-direction: column;
     gap: 1px;
 
-    &__children {
+    &__child {
       display: flex;
       flex-direction: column;
       gap: 1px;

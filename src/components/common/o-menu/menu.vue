@@ -1,7 +1,7 @@
 <script
   setup
   lang="ts"
-  generic="T extends { id: string, name: string, tip: string, meta: Record<string,any>,children: T[] }">
+  generic="T extends { id: string, name: string, tip: string, meta: Record<string,any>,child: T[] }">
   import { ref, computed, inject, provide, CSSProperties, onMounted } from 'vue'
   import { depthKey } from '../constants/key'
 
@@ -46,8 +46,8 @@
   // 初始化 tip
   const initTip = (source: T[]) => {
     source.map(item => {
-      if (item.children) {
-        const selected = item.children.find(child => child.meta.selected)
+      if (item.child) {
+        const selected = item.child.find(child => child.meta.selected)
         if (selected) {
           item.tip = selected.name
         }
@@ -59,7 +59,7 @@
     if (parentData) {
       parentData.tip = data.name
 
-      parentData.children.map(item => {
+      parentData.child.map(item => {
         if (item.id !== data.id) {
           item.meta!.selected = false
         } else {
@@ -84,9 +84,9 @@
     @click="handleClick(item, parentData)">
     <slot :optionData="item" :parentData="parentData" :depth="depth" :active="activeIds.has(item.id)" />
 
-    <template v-if="item.children.length && activeIds.has(item.id)">
+    <template v-if="item.child.length && activeIds.has(item.id)">
       <div class="o-menu__children" :style="childStyles">
-        <OMenu :source="item.children!" :parentData="item">
+        <OMenu :source="item.child!" :parentData="item">
           <template
             v-for="(_, slotName) in $slots"
             #[slotName]="scope: { optionData: T, parentData: T, depth: number, active: boolean }">

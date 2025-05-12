@@ -10,11 +10,10 @@
   import { cloneDeep } from 'lodash-es'
   import { fileTree } from '@/layouts/mock/fileTree'
 
-  const { mousePosition, fileContext } = storeToRefs(useFileStore())
-  console.log('fileContext: ', fileContext.value)
+  const { mousePosition, fileMenuContext } = storeToRefs(useFileStore())
   const fileContextMenuList = ref<ContextMenuItem[]>([])
 
-  if (fileContext.value?.type === 'fileItem') {
+  if (fileMenuContext.value?.type === 'fileItem') {
     fileContextMenuList.value = [
       {
         id: 'copy',
@@ -23,7 +22,7 @@
         parentId: '',
         tip: '',
         meta: {},
-        children: [],
+        child: [],
       },
       {
         id: 'rename',
@@ -32,7 +31,7 @@
         parentId: '',
         tip: '',
         meta: {},
-        children: [],
+        child: [],
       },
       {
         id: 'delete',
@@ -41,10 +40,10 @@
         parentId: '',
         tip: '',
         meta: {},
-        children: [],
+        child: [],
       },
     ]
-  } else if (fileContext.value?.type === 'fileList') {
+  } else if (fileMenuContext.value?.type === 'emptyArea') {
     fileContextMenuList.value = [
       {
         id: 'create-new-folder',
@@ -53,7 +52,7 @@
         parentId: '',
         tip: '',
         meta: {},
-        children: [],
+        child: [],
       },
       {
         id: 'order',
@@ -62,7 +61,7 @@
         parentId: '',
         tip: '',
         meta: {},
-        children: [
+        child: [
           {
             id: 'name',
             name: '名称',
@@ -70,7 +69,7 @@
             parentId: 'order',
             tip: '',
             meta: { selected: true },
-            children: [],
+            child: [],
           },
           {
             id: 'type',
@@ -79,7 +78,7 @@
             parentId: 'order',
             tip: '',
             meta: { selected: false },
-            children: [],
+            child: [],
           },
           {
             id: 'size',
@@ -88,7 +87,7 @@
             parentId: 'order',
             tip: '',
             meta: { selected: false },
-            children: [],
+            child: [],
           },
           {
             id: 'mark',
@@ -97,7 +96,7 @@
             parentId: 'order',
             tip: '',
             meta: { selected: false },
-            children: [],
+            child: [],
           },
           {
             id: 'create-time',
@@ -106,7 +105,7 @@
             icon: loadStaticResource('/icons/sidebar-file.svg'),
             tip: '',
             meta: { selected: false },
-            children: [],
+            child: [],
           },
           {
             id: 'update-time',
@@ -115,7 +114,7 @@
             icon: loadStaticResource('/icons/sidebar-file.svg'),
             tip: '',
             meta: { selected: false },
-            children: [],
+            child: [],
           },
         ],
       },
@@ -130,33 +129,34 @@
   })
 
   const handleClick = (data: ContextMenuItem) => {
-    if (fileContext.value?.type === 'fileItem') {
+    if (fileMenuContext.value?.type === 'fileItem') {
       if (data.id === 'copy') {
-        if (fileContext.value.context.length === 1) {
-          // fileContext.value.context[0].children.push(cloneDeep())
+        if (fileMenuContext.value.context.length === 1) {
+          // fileContext.value.context[0].child.push(cloneDeep())
         }
       }
     }
 
-    if (fileContext.value?.type === 'fileList') {
+    if (fileMenuContext.value?.type === 'emptyArea') {
+      console.log('fileMenuContext.value: ', fileMenuContext.value)
       if (data.id === 'create-new-folder') {
-        if (fileContext.value.context.length === 1) {
-          fileContext.value.context[0].children.push({
+        if (fileContextMenuList.value.length === 1) {
+          fileMenuContext.value.context[0].child.push({
             id: uuidv4(),
             name: '新建文件夹',
             type: 'folder',
-            parentId: fileContext.value.context[0].id,
-            children: [],
+            parentId: fileMenuContext.value.context[0].id,
+            child: [],
             createdAt: new Date(),
             updatedAt: new Date(),
           })
         } else {
-          fileContext.value.context.push({
+          fileMenuContext.value.context.push({
             id: uuidv4(),
             name: '新建文件夹',
             type: 'folder',
             parentId: '',
-            children: [],
+            child: [],
             createdAt: new Date(),
             updatedAt: new Date(),
           })
@@ -164,7 +164,7 @@
       }
     }
 
-    fileContext.value = undefined
+    fileMenuContext.value = undefined
   }
 </script>
 
@@ -179,7 +179,7 @@
           </template>
           <template #right>
             <label class="tip">{{ optionData.tip }}</label>
-            <OIcon v-if="optionData.children.length" :src="loadStaticResource('/icons/menu-more.svg')" :size="16" />
+            <OIcon v-if="optionData.child.length" :src="loadStaticResource('/icons/menu-more.svg')" :size="16" />
             <OIcon v-if="optionData.meta?.selected" :src="loadStaticResource('/icons/menu-select.svg')" :size="16" />
           </template>
         </OOption>

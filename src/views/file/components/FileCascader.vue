@@ -1,4 +1,4 @@
-<script setup lang="ts" generic=" T extends {id: string, children: T[]}">
+<script setup lang="ts" generic=" T extends {id: string, child: T[]}">
   import { OCascader } from '../../../components/common/o-cascader'
   import { fileTree } from '@/layouts/mock/fileTree'
   import { OIcon } from '../../../components/common/o-icon'
@@ -8,45 +8,42 @@
   import { storeToRefs } from 'pinia'
   import { useFileStore } from '@/store/fileStore'
 
-  const { currentFile, mousePosition, fileContext } = storeToRefs(useFileStore())
+  const { currentFile, mousePosition, fileMenuContext } = storeToRefs(useFileStore())
 
-  const handleContextMenu = (data: FileItem, event: MouseEvent) => {
-    mousePosition.value.x = event.clientX
-    mousePosition.value.y = event.clientY
-    fileContext.value = { type: 'fileItem', context: [data] }
+  const handleItemContextMenu = (data: FileItem, event: MouseEvent) => {
+    ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
+    fileMenuContext.value = { type: 'fileItem', context: [data] }
   }
 
-  const handleCascaderContextMenu = (data: FileItem, event: MouseEvent) => {
-    mousePosition.value.x = event.clientX
-    mousePosition.value.y = event.clientY
-    fileContext.value = { type: 'fileList', context: [data] }
+  const handleChildContextMenu = (data: FileItem, event: MouseEvent) => {
+    ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
+    fileMenuContext.value = { type: 'emptyArea', context: [data] }
   }
 
-  const handleRootFileCascader = (event: MouseEvent) => {
-    mousePosition.value.x = event.clientX
-    mousePosition.value.y = event.clientY
-    fileContext.value = { type: 'fileList', context: fileTree.value }
+  const handleRootContextMenu = (event: MouseEvent) => {
+    ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
+    fileMenuContext.value = { type: 'emptyArea', context: fileTree.value }
   }
 </script>
 
 <template>
-  <div class="file-cascader" @contextmenu.prevent.stop="handleRootFileCascader($event)">
-    <OCascader :source="fileTree" @cascader-context-menu="handleCascaderContextMenu">
-      <template #default="{ optionData, active }">
+  <div class="file-cascader" @contextmenu.prevent.stop="handleRootContextMenu($event)">
+    <OCascader :source="fileTree" @child-context-menu="handleChildContextMenu">
+      <template #default="{ data, parentData, active }">
         <OOption
           :isActive="active"
-          @contextmenu.prevent.stop="handleContextMenu(optionData, $event)"
-          @click="currentFile = optionData">
+          @contextmenu.prevent.stop="handleItemContextMenu(data, $event)"
+          @click="currentFile = data">
           <template #left>
             <OIcon
               :src="
-                optionData.type === 'folder'
+                data.type === 'folder'
                   ? loadStaticResource('/icons/sidebar-file.svg')
                   : loadStaticResource('/icons/sidebar-page.svg')
               " />
-            <label>{{ optionData.name }}</label>
+            <label>{{ data.name }}</label>
           </template>
-          <template #right v-if="optionData.type === 'folder'">
+          <template #right v-if="data.type === 'folder'">
             <OIcon :src="loadStaticResource('/icons/menu-more.svg')" :size="16" />
           </template>
         </OOption>

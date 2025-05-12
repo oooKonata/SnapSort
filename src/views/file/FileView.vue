@@ -5,19 +5,19 @@
   import { useFileStore } from '@/store/fileStore'
   import { fileTree } from '@/layouts/mock/fileTree'
 
-  const { currentFile, mousePosition, fileContext } = storeToRefs(useFileStore())
+  const { currentFile, mousePosition, fileMenuContext } = storeToRefs(useFileStore())
 
   const handleContextMenu = (event: MouseEvent) => {
-    mousePosition.value.x = event.clientX
-    mousePosition.value.y = event.clientY
-    fileContext.value = { type: 'fileList', context: currentFile.value ? [currentFile.value!] : fileTree.value }
+    ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
+    fileMenuContext.value = { type: 'emptyArea', context: currentFile.value ? [currentFile.value] : fileTree.value }
+    console.log('---', currentFile.value, fileMenuContext.value)
   }
 </script>
 
 <template>
   <div class="file-view">
     <FileHeader />
-    <div class="scroll-view" @contextmenu="handleContextMenu($event)">
+    <div class="scroll-view" @contextmenu.prevent="handleContextMenu($event)">
       <FileCascader />
     </div>
   </div>

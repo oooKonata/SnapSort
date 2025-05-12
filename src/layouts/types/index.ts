@@ -10,7 +10,7 @@ export interface FileItem {
   name: string
   type: 'file' | 'folder'
   parentId: string | null
-  children: FileItem[]
+  child: FileItem[]
   createdAt: Date
   updatedAt: Date
 }
@@ -21,5 +21,5 @@ export interface ContextMenuItem {
   parentId: string | null
   tip: string
   meta: Record<string, any>
-  children: ContextMenuItem[]
+  child: ContextMenuItem[]
 }

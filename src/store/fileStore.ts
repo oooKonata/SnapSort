@@ -10,15 +10,15 @@ export const useFileStore = defineStore('ss-file', () => {
   // const findFolderById = (items: FileItem[], targetId: string | null): FileItem | undefined => {
   //   for (const item of items) {
   //     if (item.id === targetId) return item
-  //     if (item.type === 'folder' && item.children) {
-  //       const found = findFolderById(item.children, targetId)
+  //     if (item.type === 'folder' && item.child) {
+  //       const found = findFolderById(item.child, targetId)
   //       if (found) return found
   //     }
   //   }
   // }
 
   // const currentFileList = computed(() => {
-  //   return findFolderById(fileTree.value, currentFolderId.value)?.children ?? []
+  //   return findFolderById(fileTree.value, currentFolderId.value)?.child ?? []
   // })
 
   // const createFolder = (name: string) => {
@@ -27,14 +27,14 @@ export const useFileStore = defineStore('ss-file', () => {
   //     name,
   //     type: 'folder',
   //     parentId: currentFolderId.value,
-  //     children: [],
+  //     child: [],
   //     createdAt: new Date(),
   //     updatedAt: new Date(),
   //   }
 
   //   if (currentFolderId.value) {
   //     const parent = findFolderById(fileTree.value, currentFolderId.value)
-  //     parent?.children.push(newFolder)
+  //     parent?.child.push(newFolder)
   //   } else {
   //     fileTree.value.push(newFolder)
   //   }
@@ -42,7 +42,7 @@ export const useFileStore = defineStore('ss-file', () => {
 
   const currentFile = ref<FileItem>()
   const mousePosition = ref<{ x: number; y: number }>({ x: 0, y: 0 })
-  const fileContext = ref<{ type: string; context: FileItem[] }>()
+  const fileMenuContext = ref<{ type: 'fileItem' | 'emptyArea'; context: FileItem[] }>()
 
-  return { currentFile, mousePosition, fileContext }
+  return { currentFile, mousePosition, fileMenuContext }
 })
