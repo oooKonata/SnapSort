@@ -1,4 +1,4 @@
-<script setup lang="ts" generic=" T extends {id: string, child: T[]}">
+<script setup lang="ts">
   import { OCascader } from '../../../components/common/o-cascader'
   import { fileTree } from '@/layouts/mock/fileTree'
   import { OIcon } from '../../../components/common/o-icon'
@@ -7,22 +7,24 @@
   import { FileItem } from '@/layouts/types'
   import { storeToRefs } from 'pinia'
   import { useFileStore } from '@/store/fileStore'
+  import { MENU_TYPE } from '@/enums'
+  import FileMarks from '@/components/features/FileMarks.vue'
 
   const { currentFile, mousePosition, fileMenuContext } = storeToRefs(useFileStore())
 
   const handleItemContextMenu = (data: FileItem, event: MouseEvent) => {
     ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
-    fileMenuContext.value = { type: 'fileItem', context: [data] }
+    fileMenuContext.value = { type: MENU_TYPE.FILE_ITEM, context: [data] }
   }
 
   const handleChildContextMenu = (data: FileItem, event: MouseEvent) => {
     ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
-    fileMenuContext.value = { type: 'emptyArea', context: [data] }
+    fileMenuContext.value = { type: MENU_TYPE.EXTRA, context: [data] }
   }
 
   const handleRootContextMenu = (event: MouseEvent) => {
     ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
-    fileMenuContext.value = { type: 'emptyArea', context: fileTree.value }
+    fileMenuContext.value = { type: MENU_TYPE.EXTRA, context: fileTree.value }
   }
 </script>
 
@@ -43,8 +45,9 @@
               " />
             <label>{{ data.name }}</label>
           </template>
-          <template #right v-if="data.type === 'folder'">
-            <OIcon :src="loadStaticResource('/icons/menu-more.svg')" :size="16" />
+          <template #right>
+            <OIcon v-if="data.type === 'folder'" :src="loadStaticResource('/icons/menu-more.svg')" :size="16" />
+            <FileMarks v-if="data.meta?.mark" :source="data.meta?.mark" />
           </template>
         </OOption>
       </template>

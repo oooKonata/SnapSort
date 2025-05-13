@@ -1,4 +1,6 @@
+import { MARK_COLOR } from '@/enums'
 import { FileItem } from '@/layouts/types'
+import { formatDate } from '@/utils/formatDate'
 import { ref } from 'vue'
 
 const fileTree = ref<FileItem[]>([
@@ -14,8 +16,6 @@ const fileTree = ref<FileItem[]>([
         type: 'folder',
         parentId: '1',
         child: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         id: '1-2',
@@ -29,8 +29,6 @@ const fileTree = ref<FileItem[]>([
             type: 'folder',
             parentId: '1-2',
             child: [],
-            createdAt: new Date(),
-            updatedAt: new Date(),
           },
           {
             id: '1-2-2',
@@ -50,20 +48,12 @@ const fileTree = ref<FileItem[]>([
                     type: 'file',
                     parentId: '1-2-2-1',
                     child: [],
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
                   },
                 ],
-                createdAt: new Date(),
-                updatedAt: new Date(),
               },
             ],
-            createdAt: new Date(),
-            updatedAt: new Date(),
           },
         ],
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         id: '1-3',
@@ -71,8 +61,6 @@ const fileTree = ref<FileItem[]>([
         type: 'folder',
         parentId: '1',
         child: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         id: '1-4',
@@ -80,8 +68,13 @@ const fileTree = ref<FileItem[]>([
         type: 'file',
         parentId: '1',
         child: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        meta: {
+          format: 'Adobe Illustrator File',
+          size: '1.50MB',
+          mark: [MARK_COLOR.RED, MARK_COLOR.BLUE, MARK_COLOR.YELLOW],
+          createdAt: formatDate(),
+          updatedAt: formatDate(),
+        },
       },
       {
         id: '1-5',
@@ -89,12 +82,28 @@ const fileTree = ref<FileItem[]>([
         type: 'file',
         parentId: '1',
         child: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        meta: {
+          format: 'PNG图像',
+          size: '307KB',
+          dimensions: '557x566',
+          resolution: '72x72',
+          colorSpace: 'RGB',
+          ICCProfile: 'sRGB IEC61966-2.1',
+          mark: [
+            MARK_COLOR.RED,
+            MARK_COLOR.ORANGE,
+            MARK_COLOR.YELLOW,
+            MARK_COLOR.GREEN,
+            MARK_COLOR.BLUE,
+            MARK_COLOR.PURPLE,
+            MARK_COLOR.GRAY,
+            MARK_COLOR.NONE,
+          ],
+          createdAt: formatDate(),
+          updatedAt: formatDate(),
+        },
       },
     ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
     id: '2',
@@ -102,8 +111,6 @@ const fileTree = ref<FileItem[]>([
     type: 'folder',
     parentId: '',
     child: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
     id: '3',
@@ -111,8 +118,6 @@ const fileTree = ref<FileItem[]>([
     type: 'folder',
     parentId: '',
     child: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
     id: '4',
@@ -120,8 +125,6 @@ const fileTree = ref<FileItem[]>([
     type: 'folder',
     parentId: '',
     child: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
     id: '5',
@@ -129,8 +132,6 @@ const fileTree = ref<FileItem[]>([
     type: 'folder',
     parentId: '',
     child: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
     id: '6',
@@ -138,8 +139,6 @@ const fileTree = ref<FileItem[]>([
     type: 'folder',
     parentId: '',
     child: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
 ])
 

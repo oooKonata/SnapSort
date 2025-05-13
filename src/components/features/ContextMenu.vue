@@ -9,11 +9,13 @@
   import { v4 as uuidv4 } from 'uuid'
   import { cloneDeep } from 'lodash-es'
   import { fileTree } from '@/layouts/mock/fileTree'
+  import { MENU_TYPE } from '@/enums'
+  import { formatDate } from '@/utils/formatDate'
 
   const { mousePosition, fileMenuContext } = storeToRefs(useFileStore())
   const fileContextMenuList = ref<ContextMenuItem[]>([])
 
-  if (fileMenuContext.value?.type === 'fileItem') {
+  if (fileMenuContext.value?.type === MENU_TYPE.FILE_ITEM) {
     fileContextMenuList.value = [
       {
         id: 'copy',
@@ -43,7 +45,7 @@
         child: [],
       },
     ]
-  } else if (fileMenuContext.value?.type === 'emptyArea') {
+  } else if (fileMenuContext.value?.type === MENU_TYPE.EXTRA) {
     fileContextMenuList.value = [
       {
         id: 'create-new-folder',
@@ -129,7 +131,7 @@
   })
 
   const handleClick = (data: ContextMenuItem) => {
-    if (fileMenuContext.value?.type === 'fileItem') {
+    if (fileMenuContext.value?.type === MENU_TYPE.FILE_ITEM) {
       if (data.id === 'copy') {
         if (fileMenuContext.value.context.length === 1) {
           // fileContext.value.context[0].child.push(cloneDeep())
@@ -137,18 +139,15 @@
       }
     }
 
-    if (fileMenuContext.value?.type === 'emptyArea') {
-      console.log('fileMenuContext.value: ', fileMenuContext.value)
+    if (fileMenuContext.value?.type === MENU_TYPE.EXTRA) {
       if (data.id === 'create-new-folder') {
-        if (fileContextMenuList.value.length === 1) {
+        if (fileMenuContext.value.context.length === 1) {
           fileMenuContext.value.context[0].child.push({
             id: uuidv4(),
             name: '新建文件夹',
             type: 'folder',
             parentId: fileMenuContext.value.context[0].id,
             child: [],
-            createdAt: new Date(),
-            updatedAt: new Date(),
           })
         } else {
           fileMenuContext.value.context.push({
@@ -157,8 +156,6 @@
             type: 'folder',
             parentId: '',
             child: [],
-            createdAt: new Date(),
-            updatedAt: new Date(),
           })
         }
       }

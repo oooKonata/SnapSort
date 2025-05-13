@@ -150,7 +150,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    @include divider-bottom-light;
+    @include divider-right-light;
     position: relative;
 
     .profile {

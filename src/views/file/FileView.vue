@@ -4,13 +4,13 @@
   import { storeToRefs } from 'pinia'
   import { useFileStore } from '@/store/fileStore'
   import { fileTree } from '@/layouts/mock/fileTree'
+  import { MENU_TYPE } from '@/enums'
 
   const { currentFile, mousePosition, fileMenuContext } = storeToRefs(useFileStore())
 
   const handleContextMenu = (event: MouseEvent) => {
     ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
-    fileMenuContext.value = { type: 'emptyArea', context: currentFile.value ? [currentFile.value] : fileTree.value }
-    console.log('---', currentFile.value, fileMenuContext.value)
+    fileMenuContext.value = { type: MENU_TYPE.EXTRA, context: currentFile.value ? [currentFile.value] : fileTree.value }
   }
 </script>
 

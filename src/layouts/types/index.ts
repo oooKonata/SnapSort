@@ -1,3 +1,5 @@
+import { MARK_COLOR } from '@/enums'
+
 export interface NavList {
   id: string
   label: string
@@ -11,8 +13,17 @@ export interface FileItem {
   type: 'file' | 'folder'
   parentId: string | null
   child: FileItem[]
-  createdAt: Date
-  updatedAt: Date
+  meta?: {
+    format: string
+    size: string
+    dimensions?: string
+    resolution?: string
+    colorSpace?: string
+    ICCProfile?: string
+    mark?: MARK_COLOR[]
+    createdAt: string
+    updatedAt: string
+  }
 }
 export interface ContextMenuItem {
   id: string

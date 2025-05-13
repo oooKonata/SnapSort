@@ -1,3 +1,4 @@
+import { MENU_TYPE } from '@/enums'
 import { FileItem } from '@/layouts/types'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -42,7 +43,7 @@ export const useFileStore = defineStore('ss-file', () => {
 
   const currentFile = ref<FileItem>()
   const mousePosition = ref<{ x: number; y: number }>({ x: 0, y: 0 })
-  const fileMenuContext = ref<{ type: 'fileItem' | 'emptyArea'; context: FileItem[] }>()
+  const fileMenuContext = ref<{ type: MENU_TYPE; context: FileItem[] }>()
 
   return { currentFile, mousePosition, fileMenuContext }
 })

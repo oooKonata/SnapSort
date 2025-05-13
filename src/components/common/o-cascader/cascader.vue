@@ -1,18 +1,20 @@
-<script setup lang="ts" generic="T extends { id: string, child: T[] }">
+<script setup lang="ts">
   import { ref, computed, inject, provide, CSSProperties } from 'vue'
   import { depthKey } from '../constants/key'
+  import FileInfo from '@/components/features/FileInfo.vue'
+  import { FileItem } from '@/layouts/types'
 
   defineOptions({
     name: 'OCascader',
   })
 
   const props = defineProps<{
-    source: T[]
-    parentData?: T
+    source: FileItem[]
+    parentData?: FileItem
   }>()
 
   const emit = defineEmits<{
-    (e: 'child-context-menu', data: T, event: MouseEvent): void
+    (e: 'child-context-menu', data: FileItem, event: MouseEvent): void
   }>()
 
   const depth = inject(depthKey, ref(0))
@@ -31,7 +33,7 @@
     }
   })
 
-  const expandSub = (data: T) => {
+  const expandSub = (data: FileItem) => {
     activeIds.value.add(data.id)
     // 剔除同级其他 id
     props.source.map(item => {
@@ -46,7 +48,7 @@
   <div v-for="(item, index) in source" :key="index" class="o-cascader" @click="expandSub(item)">
     <slot :data="item" :parentData="parentData" :depth="depth" :active="activeIds.has(item.id)" />
 
-    <template v-if="item.child.length && activeIds.has(item.id)">
+    <template v-if="activeIds.has(item.id)">
       <div
         class="o-cascader__child"
         :style="childStyles"
@@ -57,10 +59,11 @@
           @child-context-menu="(child, event) => emit('child-context-menu', child, event)">
           <template
             v-for="(_, slotName) in $slots"
-            #[slotName]="scope: { data: T, parentData: T, depth: number, active: boolean }">
+            #[slotName]="scope: { data: FileItem, parentData: FileItem, depth: number, active: boolean }">
             <slot :name="slotName" v-bind="scope" />
           </template>
         </OCascader>
+        <FileInfo v-if="item.type !== 'folder'" :source="item" />
       </div>
     </template>
   </div>
