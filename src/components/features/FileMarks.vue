@@ -11,15 +11,16 @@
     return marks.map(mark => MARK_COLOR_MAP[mark as MARK_COLOR])
   }
 
-  const convertedMarks = convertMarks(props.source)
-  console.log('convertedMarks: ', convertedMarks)
+  const convertedMarks = convertMarks(props.source).slice(0, 3)
 </script>
 
 <template>
-  <div class="file-marks">
-    <div v-for="(item, index) in convertedMarks">
-      <OIcon class="icon" :src="loadStaticResource(`/icons/mark-${item}-border.svg`)" />
-    </div>
+  <div class="file-marks" :style="{ width: `${(convertedMarks.length - 1) * 5 + 20}px` }">
+    <OIcon
+      v-for="(item, index) in convertedMarks"
+      class="icon"
+      :src="loadStaticResource(`/icons/mark-${item}-border.svg`)"
+      :style="{ right: `${(convertedMarks.length - 1 - index) * 5}px`, zIndex: convertedMarks.length - index }" />
   </div>
 </template>
 
@@ -27,11 +28,11 @@
   .file-marks {
     display: flex;
     align-items: center;
-    // background-color: coral;
     position: relative;
+    height: 20px;
 
     .icon {
-      background-color: aqua;
+      position: absolute;
     }
   }
 </style>

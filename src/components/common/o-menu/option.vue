@@ -67,6 +67,7 @@
     line-height: 20px;
     user-select: none;
     cursor: inherit;
+    position: relative;
 
     // background-color: aquamarine;
 

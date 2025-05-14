@@ -46,8 +46,10 @@
             <label>{{ data.name }}</label>
           </template>
           <template #right>
-            <OIcon v-if="data.type === 'folder'" :src="loadStaticResource('/icons/menu-more.svg')" :size="16" />
-            <FileMarks v-if="data.meta?.mark" :source="data.meta?.mark" />
+            <div class="right">
+              <FileMarks v-if="data.meta?.mark" :source="data.meta?.mark" />
+              <OIcon v-if="data.type === 'folder'" :src="loadStaticResource('/icons/menu-more.svg')" :size="16" />
+            </div>
           </template>
         </OOption>
       </template>
@@ -65,5 +67,11 @@
     padding: 8px 8px 0 8px;
     position: relative;
     @include divider-right-dark;
+
+    .right {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
   }
 </style>
