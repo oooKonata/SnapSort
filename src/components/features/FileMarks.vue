@@ -1,22 +1,25 @@
 <script setup lang="ts">
-  import { MARK_COLOR } from '@/enums'
+  import { MARK_COLOR, MARK_COLOR_MAP } from '@/enums'
   import { OIcon } from '../common/o-icon'
   import { loadStaticResource } from '@/assets'
 
-  defineProps<{
+  const props = defineProps<{
     source: MARK_COLOR[]
   }>()
+
+  const convertMarks = (marks: string[]): string[] => {
+    return marks.map(mark => MARK_COLOR_MAP[mark as MARK_COLOR])
+  }
+
+  const convertedMarks = convertMarks(props.source)
+  console.log('convertedMarks: ', convertedMarks)
 </script>
 
 <template>
   <div class="file-marks">
-    <OIcon class="icon" :src="loadStaticResource('/icons/mark-red-border.svg')" />
-    <OIcon class="icon" :src="loadStaticResource('/icons/mark-orange-border.svg')" />
-    <OIcon class="icon" :src="loadStaticResource('/icons/mark-yellow-border.svg')" />
-    <OIcon class="icon" :src="loadStaticResource('/icons/mark-green-border.svg')" />
-    <OIcon class="icon" :src="loadStaticResource('/icons/mark-blue-border.svg')" />
-    <OIcon class="icon" :src="loadStaticResource('/icons/mark-purple-border.svg')" />
-    <OIcon class="icon" :src="loadStaticResource('/icons/mark-gray-border.svg')" />
+    <div v-for="(item, index) in convertedMarks">
+      <OIcon class="icon" :src="loadStaticResource(`/icons/mark-${item}-border.svg`)" />
+    </div>
   </div>
 </template>
 
@@ -24,7 +27,9 @@
   .file-marks {
     display: flex;
     align-items: center;
-    background-color: coral;
+    // background-color: coral;
+    position: relative;
+
     .icon {
       background-color: aqua;
     }

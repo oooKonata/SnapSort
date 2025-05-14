@@ -70,9 +70,6 @@
 
 <style scoped lang="scss">
   .file-info {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
     line-height: 1.2;
 
     &__preview {
@@ -88,7 +85,8 @@
     &__title {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
+      margin-top: 16px;
 
       .name {
         font-size: 14px;
@@ -105,6 +103,7 @@
     &__detail {
       font-size: 12px;
       color: $color-dark-60;
+      margin-top: 12px;
 
       .title {
         font-size: 13px;
@@ -133,6 +132,7 @@
     &__mark {
       font-size: 12px;
       color: $color-dark-60;
+      margin-top: 14px;
 
       .title {
         font-size: 13px;

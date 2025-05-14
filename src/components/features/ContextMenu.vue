@@ -7,10 +7,7 @@
   import { computed, CSSProperties, ref } from 'vue'
   import { ContextMenuItem } from '@/layouts/types'
   import { v4 as uuidv4 } from 'uuid'
-  import { cloneDeep } from 'lodash-es'
-  import { fileTree } from '@/layouts/mock/fileTree'
   import { MENU_TYPE } from '@/enums'
-  import { formatDate } from '@/utils/formatDate'
 
   const { mousePosition, fileMenuContext } = storeToRefs(useFileStore())
   const fileContextMenuList = ref<ContextMenuItem[]>([])
