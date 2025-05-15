@@ -10,7 +10,21 @@
 
   const handleContextMenu = (event: MouseEvent) => {
     ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
-    fileMenuContext.value = { type: MENU_TYPE.EXTRA, context: currentFile.value ? [currentFile.value] : fileTree.value }
+    if (currentFile.value) {
+      if (currentFile.value.type === 'folder') {
+        fileMenuContext.value = {
+          type: MENU_TYPE.EXTRA,
+          context: [currentFile.value],
+        }
+      } else {
+        fileMenuContext.value = undefined
+      }
+    } else {
+      fileMenuContext.value = {
+        type: MENU_TYPE.EXTRA,
+        context: fileTree.value,
+      }
+    }
   }
 </script>
 

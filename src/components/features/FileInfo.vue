@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { MARK_COLOR } from '@/enums'
   import { FileItem } from '@/layouts/types'
-  import { computed, CSSProperties } from 'vue'
 
   defineProps<{
     source: FileItem
@@ -70,6 +69,7 @@
 
 <style scoped lang="scss">
   .file-info {
+    flex: 1;
     line-height: 1.2;
 
     &__preview {

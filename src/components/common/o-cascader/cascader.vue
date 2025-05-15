@@ -25,11 +25,8 @@
 
   const childStyles = computed((): CSSProperties => {
     return {
-      position: 'absolute',
-      top: '0',
       left: '248px',
       width: '248px',
-      padding: '8px 8px 0 8px',
     }
   })
 
@@ -63,7 +60,7 @@
             <slot :name="slotName" v-bind="scope" />
           </template>
         </OCascader>
-        <FileInfo v-if="item.type !== 'folder'" :source="item" />
+        <FileInfo v-if="item.type !== 'folder'" :source="item" @contextmenu.prevent.stop />
       </div>
     </template>
   </div>
@@ -81,6 +78,10 @@
       gap: 1px;
       height: 100vh;
       @include divider-right-dark;
+
+      position: absolute;
+      top: 0;
+      padding: 8px;
     }
   }
 </style>

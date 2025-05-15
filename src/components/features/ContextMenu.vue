@@ -12,6 +12,89 @@
   const { mousePosition, fileMenuContext } = storeToRefs(useFileStore())
   const fileContextMenuList = ref<ContextMenuItem[]>([])
 
+  const markList = ref<ContextMenuItem>({
+    id: 'mark',
+    icon: loadStaticResource('/icons/sidebar-file.svg'),
+    name: '标记',
+    parentId: '',
+    tip: '',
+    meta: {},
+    child: [
+      {
+        id: 'red',
+        name: '红色',
+        icon: loadStaticResource('/icons/mark-red.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: true },
+        child: [],
+      },
+      {
+        id: 'orange',
+        name: '橙色',
+        icon: loadStaticResource('/icons/mark-orange.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: true },
+        child: [],
+      },
+      {
+        id: 'yellow',
+        name: '黄色',
+        icon: loadStaticResource('/icons/mark-yellow.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: true },
+        child: [],
+      },
+      {
+        id: 'green',
+        name: '绿色',
+        icon: loadStaticResource('/icons/mark-green.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        child: [],
+      },
+      {
+        id: 'blue',
+        name: '蓝色',
+        icon: loadStaticResource('/icons/mark-blue.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        child: [],
+      },
+      {
+        id: 'purple',
+        name: '紫色',
+        icon: loadStaticResource('/icons/mark-purple.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        child: [],
+      },
+      {
+        id: 'gray',
+        name: '灰色',
+        icon: loadStaticResource('/icons/mark-gray.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        child: [],
+      },
+      {
+        id: 'none',
+        name: '个人',
+        icon: loadStaticResource('/icons/mark-none.svg'),
+        parentId: 'order',
+        tip: '',
+        meta: { selected: false },
+        child: [],
+      },
+    ],
+  })
+
   if (fileMenuContext.value?.type === MENU_TYPE.FILE_ITEM) {
     fileContextMenuList.value = [
       {
@@ -179,6 +262,10 @@
         </OOption>
       </template>
     </OMenu>
+    <div class="mark" v-for="(item, index) in markList" :key="index">
+      <!-- <OIcon :src="item" /> -->
+      <!-- {{ item }} -->
+    </div>
   </div>
 </template>
 

@@ -20,7 +20,7 @@
       v-for="(item, index) in convertedMarks"
       class="icon"
       :src="loadStaticResource(`/icons/mark-${item}-border.svg`)"
-      :style="{ right: `${(convertedMarks.length - 1 - index) * 5}px`, zIndex: convertedMarks.length - index }" />
+      :style="{ right: `${(convertedMarks.length - 1 - index) * 5}px`, zIndex: -index }" />
   </div>
 </template>
 
