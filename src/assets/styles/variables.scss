@@ -56,6 +56,10 @@ $color-bg: #f8f8f8;
   box-shadow: $color-dark-6 -1px 0 0 0 inset;
 }
 
+@mixin divider-top-dark {
+  box-shadow: $color-dark-6 0 1px 0 0 inset;
+}
+
 @mixin divider-bottom-dark {
   box-shadow: $color-dark-6 0 -1px 0 0 inset;
 }
