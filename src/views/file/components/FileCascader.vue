@@ -15,6 +15,7 @@
   const handleItemContextMenu = (data: FileItem, event: MouseEvent) => {
     ;[mousePosition.value.x, mousePosition.value.y] = [event.clientX, event.clientY]
     fileMenuContext.value = { type: MENU_TYPE.FILE_ITEM, context: [data] }
+    console.log('fileMenuContext.value: ', fileMenuContext.value)
   }
 
   const handleChildContextMenu = (data: FileItem, event: MouseEvent) => {
